@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
+    <title>Quotes Generator</title>          
+</head>
+<body>
+    <div id="outerDiv" class="container" >
+        <h2>Random Quote Generator</h2>
+        <div id="rowDov" class="row" style="margin-top: 0px;">
+            <div id="quoteDiv" class="center-align">                    
+            </div>                     
+        </div>        
+        <div class="divider"></div>
+        <div id="quoteTextDiv" style="margin: auto;font-style: italic;"></div>
+        <div id="authorDiv" style="margin: auto;font-style: italic;text-align: center;"></div>
+        <div class="right-align">
+            <a class="waves-effect waves-light btn" onclick="handleClick()">>></a>
+        </div>
+    </div>
+    <script>
+        const settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://type.fit/api/quotes",
+        "method": "GET"
+        }    
+        var webdata = {}
+        var random_num = 0;
+        
+        
+        function handleClick(){
+            $("#quoteTextDiv").empty();
+            $("#authorDiv").empty();
+            random_num =  Math.floor((Math.random() * 15) + 1);                
+            const textval = "<h4>"+webdata[random_num].text+"</h4>";           
+            const author = "<p>"+" -- "+webdata[random_num].author+"</p>";
+            $("#quoteTextDiv").append(textval);
+            $("#authorDiv").append(author);
+        }        
+        function fetchData(){
+            $.ajax(settings).done(function (response) {
+                const data = JSON.parse(response);
+                //console.log(data)
+                webdata = data
+                random_num =  Math.floor((Math.random() * 15) + 1);  
+                const textval = "<h4>"+webdata[random_num].text+"</h4>";           
+                const author = "<p>"+" -- "+webdata[random_num].author+"</p>";              
+                $("#quoteTextDiv").append(textval);
+                $("#authorDiv").append(author);
+            });
+        }               
+        fetchData();
+        
+    </script>
+</body>
+</html>
